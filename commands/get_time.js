@@ -64,7 +64,7 @@ module.exports = {
         let temp = await interaction.guild.members.fetch()
 
         rowList.forEach(element => {
-            rowString += "User: " + interaction.client.users.cache.get(element.discordid).username + "| " + Math.round(element.total_time/1000/60) + " minutes logged \n";
+            rowString += "User: " + interaction.client.users.cache.get(element.discordid).username + " | " + Math.round(element.total_time/1000/60) + " minutes logged \n";
         });
         if(rowString === ""){
             interaction.reply("No results found")
