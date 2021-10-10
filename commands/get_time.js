@@ -5,7 +5,7 @@ module.exports = {
 		.setName('standings')
 		.setDescription('Gets the total time for everyone'),
 	async execute(interaction) {
-
+        await interaction.deferReply();
         // Immedietly update any existing temps
         
         //First end all temp rows
@@ -67,10 +67,10 @@ module.exports = {
             rowString += "User: " + interaction.client.users.cache.get(element.discordid).username + "| " + Math.round(element.total_time/1000/60) + " minutes logged \n";
         });
         if(rowString === ""){
-            interaction.reply("No results found")
+            interaction.editreply("No results found")
         }
         else{
-            interaction.reply(rowString)
+            interaction.editReply(rowString)
         }
 	},
 };
