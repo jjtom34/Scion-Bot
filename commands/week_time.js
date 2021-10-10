@@ -30,13 +30,13 @@ module.exports = {
         
         // Re add everybody in a voice channel
         // First get a list of everyone in a voice channel
-        let temp2 = await interaction.guild.voiceStates.cache
+        let temp2 = await interaction.guild.fetch("392106468570300428")
         if(temp2 !== undefined && temp2 !== null){
             // For everyone in a voice chat right now
             // Add a temp row for them
-            for(let newtemp of temp2){
+            for(let newtemp of temp2.voiceStates.cache){
                 // For any channel thats not afk
-                if(newtemp.channelId !== "626946164176060437"){
+                if(newtemp[1].channelId !== "626946164176060437" && newtemp[1].channelID !== null){
                     console.log("Creating new temp")
                     console.log(newtemp)
                     try{
