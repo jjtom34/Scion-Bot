@@ -1,11 +1,12 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const sequelize = require('sequelize');
+const { Op } = require("sequelize");
 module.exports = {
-	name: 'ready',
-	once: true,
-	async execute(client) {
-		console.log(`Ready! Logged in as ${client.user.tag}`);
-		await global.table.sync({ force: true });
-		await global.temp.sync({ force: true });
-		// Immedietly update any existing temps
+	data: new SlashCommandBuilder()
+		.setName('daily_standings')
+		.setDescription('Gets all logged time from the last 24 hours'),
+	async execute(interaction) {
+        // Immedietly update any existing temps
         
         //First end all temp rows
         const tempRow = await global.temp.findAll({raw: true })
@@ -29,9 +30,7 @@ module.exports = {
         
         // Re add everybody in a voice channel
         // First get a list of everyone in a voice channel
-        let temp2 = await client.guilds.cache.get("392106468570300428").voiceStates.cache
-		console.log(temp2)
-		console.log(client.guilds.fetch("392106468570300428"))
+        let temp2 = await interaction.guild.voiceStates.cache
         if(temp2 !== undefined && temp2 !== null){
             // For everyone in a voice chat right now
             // Add a temp row for them
@@ -54,5 +53,27 @@ module.exports = {
                 }
             }
         }
+        console.log(Date.now()-(7*24*60*60*1000));
+        const rowList = await global.table.findAll({attributes: ['discordid',
+                                                                [sequelize.fn('sum', sequelize.col('time_logged')), 'total_time']],
+                                                    where: {start_time:{[Op.gt]:Date.now()-(24*60*60*1000)}},
+                                                    group:'discordid',
+                                                    raw: true })
+        console.log(rowList);
+        console.log(typeof(rowList));
+        let rowString = ""
+//        console.log(interaction.client.users.cache)
+        
+        let temp = await interaction.guild.members.fetch()
+        rowList.forEach(element => {
+            rowString += "User: " + interaction.client.users.cache.get(element.discordid).username + "| " + Math.round(element.total_time/1000/60) + " minutes logged \n";
+        });
+        if(rowString === ""){
+            interaction.reply("No results found")
+        }
+        else{
+            interaction.reply(rowString)
+        }
+        
 	},
 };

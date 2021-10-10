@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_VOICE_STATES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_VOICE_STATES,Intents.FLAGS.GUILD_MEMBERS] });
 
 // Handle text commands
 client.commands = new Collection();
@@ -86,3 +86,4 @@ const startTable = sequelize.define('startTable', {
 global.table = attendance;
 global.temp = startTable;
 client.login(token);
+
