@@ -3,8 +3,8 @@ module.exports = {
 	once: true,
 	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-		await global.table.sync({ force: true });
-		await global.temp.sync({ force: true });
+		await global.table.sync();
+		await global.temp.sync();
 		// Immedietly update any existing temps
         
         //First end all temp rows
