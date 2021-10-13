@@ -9,7 +9,8 @@ module.exports = {
         // Immedietly update any existing temps
         
         //First end all temp rows
-        const tempRow = await global.temp.findAll({raw: true })
+        let tempRow = await global.temp.findAll({raw: true })
+        let temp2 = await interaction.guild.fetch("392106468570300428")
         if(tempRow !== null){
             // For every current row
             for(let oldRow of tempRow){
@@ -30,7 +31,6 @@ module.exports = {
         
         // Re add everybody in a voice channel
         // First get a list of everyone in a voice channel
-        let temp2 = await interaction.guild.fetch("392106468570300428")
         if(temp2 !== undefined && temp2 !== null){
             // For everyone in a voice chat right now
             // Add a temp row for them

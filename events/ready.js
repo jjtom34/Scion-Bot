@@ -8,7 +8,7 @@ module.exports = {
 		// Immedietly update any existing temps
         
         //First end all temp rows
-        const tempRow = await global.temp.findAll({raw: true })
+        let tempRow = await global.temp.findAll({raw: true })
         if(tempRow !== null){
             // For every current row
             for(let oldRow of tempRow){
