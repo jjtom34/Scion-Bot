@@ -66,6 +66,10 @@ module.exports = {
 //        console.log(interaction.client.users.cache)
         
         let temp = await interaction.guild.members.fetch()
+
+        //Sort users by time logged
+        rowList.sort((a,b) => b.total_time - a.total_time);
+        
         rowList.forEach(element => {
             rowString += "User: " + interaction.client.users.cache.get(element.discordid).username + " | " + Math.round(element.total_time/1000/60) + " minutes logged \n";
         });
