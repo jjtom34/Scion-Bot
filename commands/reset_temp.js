@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const sequelize = require('sequelize');
+const helpers = require('../helpers.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('reset_temp')
