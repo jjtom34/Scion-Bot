@@ -7,7 +7,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_V
 
 // Handle text commands
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js') && file!=="helpers.js");
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -30,7 +30,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 // Read in event handlers
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js') && file!=="helpers.js");
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
