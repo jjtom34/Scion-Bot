@@ -21,7 +21,8 @@ module.exports = {
         const rowList = await global.table.findAll({attributes: ['discordid',
                                                                 [sequelize.fn('sum', sequelize.col('time_logged')), 'total_time']],
                                                     group:'discordid',
-                                                    raw: true })
+                                                    raw: true });
+                console.log(rowList);
        helpers.printOutput(rowList,interaction);
 	},
 };

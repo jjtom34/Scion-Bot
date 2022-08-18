@@ -46,15 +46,18 @@ async function deleteTemp(tempRow){
     }
 }
 async function printOutput(summed_data,interaction){
-    let rowString = ""
-    await interaction.guild.members.fetch()
+    let rowString = "";
+    await interaction.guild.members.fetch();
     //Sort users by time logged
     summed_data.sort((a,b) => b.total_time - a.total_time);
     
     summed_data.forEach(element => {
-        // IDK how but somehow theres a userid key with undefined
-        if(element.discordid !== "undefined"){
+        try{
             rowString += "User: " + interaction.guild.members.cache.get(element.discordid).displayName + " | " + Math.round(element.total_time/1000/60) + " minutes logged \n";
+        }
+        catch(error)
+        {
+            console.log(error);
         }
     });
     if(rowString === ""){
