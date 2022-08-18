@@ -22,7 +22,6 @@ module.exports = {
                                                                 [sequelize.fn('sum', sequelize.col('time_logged')), 'total_time']],
                                                     group:'discordid',
                                                     raw: true });
-                console.log(rowList);
        helpers.printOutput(rowList,interaction);
 	},
 };
