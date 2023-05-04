@@ -5,8 +5,12 @@ module.exports = {
 		console.log(newState.channelId)
 		console.log(oldState.channelId)
 		// bad style but whatevs
-		// If you are just joining a channel or returning from afk, start logging time
-        if ((oldState.channelId === null || oldState.channelId === '626946164176060437') && newState.channelId !== null && newState.channelId !== '626946164176060437'){
+		// If you are just joining a channel/returning from afk, or undeafening/unmuting; start logging time
+        if ((oldState.channelId === null || oldState.channelId === '626946164176060437') 
+			&& newState.channelId !== null 
+			&& newState.channelId !== '626946164176060437'
+			|| (oldState.selfDeaf && !newState.selfDeaf)
+			|| (oldState.selfMute && !newState.selfMute)){
 			console.log("User Joined");
 			try{
 				const tag = await global.temp.create({
@@ -19,8 +23,11 @@ module.exports = {
 				console.log(err.message)
 			}
 		}
-		// Stop logging when you go to afk or leave
-		else if (newState.channelId === '626946164176060437' || (oldState.channelId !== null && newState.channelId === null)){
+		// Stop logging when you go to afk, leave or deafen/muting
+		else if (newState.channelId === '626946164176060437' 
+				|| (oldState.channelId !== null && newState.channelId === null) 
+				|| (!oldState.selfDeaf && newState.selfDeaf)
+				|| (!oldState.selfMute && newState.selfMute)){
 			console.log("User Left or is AFK");
 			// Fetch the temp row
 			const tempRow = await global.temp.findOne({where: { discordid: String(newState.id)}})
