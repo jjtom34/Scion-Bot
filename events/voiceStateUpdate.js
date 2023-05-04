@@ -2,7 +2,11 @@ const Sequelize = require('sequelize');
 module.exports = {
 	name: 'voiceStateUpdate',
 	async execute(oldState,newState) {
-        if (oldState.channelId === null && newState.channelId !== null){
+		console.log(newState.channelId)
+		console.log(oldState.channelId)
+		// bad style but whatevs
+		// If you are just joining a channel or returning from afk, start logging time
+        if ((oldState.channelId === null || oldState.channelId === '626946164176060437') && newState.channelId !== null && newState.channelId !== '626946164176060437'){
 			console.log("User Joined");
 			try{
 				const tag = await global.temp.create({
@@ -15,7 +19,8 @@ module.exports = {
 				console.log(err.message)
 			}
 		}
-		else if ((oldState.channelId !== null && newState.channelId === null) || newState.channelId === 626946164176060437){
+		// Stop logging when you go to afk or leave
+		else if (newState.channelId === '626946164176060437' || (oldState.channelId !== null && newState.channelId === null)){
 			console.log("User Left or is AFK");
 			// Fetch the temp row
 			const tempRow = await global.temp.findOne({where: { discordid: String(newState.id)}})
