@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_VOICE_STATES,Intents.FLAGS.GUILD_MEMBERS] });
+const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'],intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_VOICE_STATES,Intents.FLAGS.GUILD_MEMBERS,Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 // Handle text commands
 client.commands = new Collection();
@@ -83,7 +83,43 @@ const startTable = sequelize.define('startTable', {
 		allowNull: false,
 	}
 });
+const react_stats = sequelize.define('react_stats',{
+	discordid: {
+		type: Sequelize.STRING,
+	},
+	react_id: {
+		type:Sequelize.STRING,
+	},
+	react_number: {
+		type:Sequelize.INTEGER,
+		defaultValue:0,
+		allowNull: false
+	},
+});
+const FGOTD = sequelize.define('FGOTD',{
+	discordid:{
+		type: Sequelize.STRING,
+	},
+	funny_number: {
+		type:Sequelize.INTEGER,
+		defaultValue:0,
+		allowNull: false
+	},
+});
+const FGOTD_Stats = sequelize.define('FGOTD_Stats',{
+	discordid:{
+		type: Sequelize.STRING,
+	},
+	date: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0,
+		allowNull: false,
+	},
+});
 global.table = attendance;
 global.temp = startTable;
+global.react_stats = react_stats;
+global.fgotd = FGOTD;
+global.FGOTD_Stats = FGOTD_Stats;
 client.login(token);
 
