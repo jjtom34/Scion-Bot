@@ -2,7 +2,8 @@ const fs = require('fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
-
+const schedule = require('node-schedule');
+const helpers = require('./helpers.js');
 const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'],intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_VOICE_STATES,Intents.FLAGS.GUILD_MEMBERS,Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 // Handle text commands
@@ -115,11 +116,48 @@ const FGOTD_Stats = sequelize.define('FGOTD_Stats',{
 		defaultValue: 0,
 		allowNull: false,
 	},
+	funny_number: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0,
+		allowNull: false,
+	}
 });
+// Reset the FGOTD table every day at 2am ct
+const job = schedule.scheduleJob('0 0 2 * * *',helpers.logFGOTD)
 global.table = attendance;
 global.temp = startTable;
 global.react_stats = react_stats;
 global.fgotd = FGOTD;
 global.FGOTD_Stats = FGOTD_Stats;
+global.FGOTD_Stats.destroy({
+	where: {},
+	truncate: true
+});
+async function dummy_data(id,count){
+	for(let i =0 ; i < count ; ++i){
+		let d = Date.now();
+		d -= 1000*60*60*24*5;
+		await global.FGOTD_Stats.create({
+			discordid: id,
+			date: d,
+			funny_number: Math.floor(Math.random() * 100)
+		})
+		d -= 1000*60*60*24*14;
+		await global.FGOTD_Stats.create({
+			discordid: id,
+			date: d,
+			funny_number: Math.floor(Math.random() * 100)
+		})
+		d -= 1000*60*60*24*60;
+		await global.FGOTD_Stats.create({
+			discordid: id,
+			date: d,
+			funny_number: Math.floor(Math.random() * 100)
+		})
+	}
+}
+dummy_data("135261819173339138",10);
+dummy_data("96875520825774080",5);
+dummy_data("736928823269916762",20);
 client.login(token);
 

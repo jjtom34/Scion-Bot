@@ -9,13 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/builders": "^0.6.0",
+    "@discordjs/builders": "^1.6.3",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
-    "discord-api-types": "^0.23.1",
+    "discord-api-types": "^0.37.42",
+    "discord-fetch-all": "^3.0.2",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
     "helpers": "^0.0.6",
+    "node-schedule": "^2.1.1",
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2"
   }

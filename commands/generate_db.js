@@ -9,7 +9,8 @@ module.exports = {
             await interaction.deferReply();
             await global.react_stats.sync();
             // Get All Messages in a channel
-            let temp3 = await guild.channels.fetch(interaction.channel)
+            let guild = await interaction.guild
+            let temp3 = await guild.channels.fetch(interaction.channelId)
             const allMessages = await fetchAll.messages(temp3, {
                 reverseArray: true, // Reverse the returned array
                 userOnly: true, // Only return messages by users
@@ -27,10 +28,10 @@ module.exports = {
                         if (user.id !== cached_reaction.message.author.id){
                             const [entry, created] = await global.react_stats.findOrCreate({
                                 where: {discordid: cached_reaction.message.author.id, 
-                                        react_id: cached_reaction.emoji.name},
+                                        react_id: cached_reaction.emoji.toString()},
                                 defaults:{
                                     discordid: cached_reaction.message.author.id, 
-                                        react_id: cached_reaction.emoji.name,
+                                        react_id: cached_reaction.emoji.toString(),
                                         react_number: 1,
                                 }
                             });
