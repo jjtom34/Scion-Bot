@@ -134,30 +134,30 @@ global.FGOTD_Stats.destroy({
 	truncate: true
 });
 async function dummy_data(id,count){
-	for(let i =0 ; i < count ; ++i){
+	for(let i =1 ; i < count ; ++i){
 		let d = Date.now();
-		d -= 1000*60*60*24*5;
+		d -= 1000*60*60*24*i;
 		await global.FGOTD_Stats.create({
 			discordid: id,
 			date: d,
 			funny_number: Math.floor(Math.random() * 100)
 		})
-		d -= 1000*60*60*24*14;
-		await global.FGOTD_Stats.create({
-			discordid: id,
-			date: d,
-			funny_number: Math.floor(Math.random() * 100)
-		})
-		d -= 1000*60*60*24*60;
-		await global.FGOTD_Stats.create({
-			discordid: id,
-			date: d,
-			funny_number: Math.floor(Math.random() * 100)
-		})
+		// d -= 1000*60*60*24*14;
+		// await global.FGOTD_Stats.create({
+		// 	discordid: id,
+		// 	date: d,
+		// 	funny_number: Math.floor(Math.random() * 100)
+		// })
+		// d -= 1000*60*60*24*60;
+		// await global.FGOTD_Stats.create({
+		// 	discordid: id,
+		// 	date: d,
+		// 	funny_number: Math.floor(Math.random() * 100)
+		// })
 	}
 }
-dummy_data("135261819173339138",10);
-dummy_data("96875520825774080",5);
-dummy_data("736928823269916762",20);
+dummy_data("135261819173339138",5);
+// dummy_data("96875520825774080",5);
+// dummy_data("736928823269916762",20);
 client.login(token);
 

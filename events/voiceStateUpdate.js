@@ -9,7 +9,7 @@ module.exports = {
 		// bad style but whatevs
 		// Start/stop streaming
 		// Probably covered by below case but idk?
-		if ((newState.channelId === oldState.channelId) && (newState.streaming && !oldState.streaming) || (!newState.streaming && oldState.streaming)){
+		if ((newState.channelId === oldState.channelId) && ((newState.streaming && !oldState.streaming) || (!newState.streaming && oldState.streaming))){
 			return;
 		}
 		// If you are just joining a channel/returning from afk, or undeafening/unmuting; start logging time

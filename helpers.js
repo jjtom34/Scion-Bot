@@ -94,8 +94,8 @@ async function printReactOutput(summed_data,sum,interaction){
 async function printMostOutput(summed_data,sum,interaction){
     let rowString = "";
     await interaction.guild.members.fetch();
-    rowString += "Top Receivers of " + interaction.options.getString('emote') + "\n"
-    rowString += "Total Number of " + interaction.options.getString('emote') + ": " + sum + "\n";
+    let start_string = "Top Receivers of " + interaction.options.getString('emote') + "\n"
+    start_string += "Total Number of " + interaction.options.getString('emote') + ": " + sum + "\n";
     
     summed_data.forEach(element => {
         try{
@@ -110,13 +110,12 @@ async function printMostOutput(summed_data,sum,interaction){
         interaction.editReply("No results found")
     }
     else{
-        interaction.editReply(rowString)
+        interaction.editReply(start_string + rowString)
     }
 }
 async function printFGOTD(data,interaction){
     let rowString = "";
     await interaction.guild.members.fetch();
-    rowString += "FGOTD:\n"
     
     data.forEach(element => {
         try{
@@ -128,10 +127,10 @@ async function printFGOTD(data,interaction){
         }
     });
     if(rowString === ""){
-        interaction.editReply("No results found")
+        interaction.editReply("No Funny Guys :(")
     }
     else{
-        interaction.editReply(rowString)
+        interaction.editReply("FGOTD:\n" + rowString)
     }
 }
 async function logFGOTD(){
@@ -148,6 +147,19 @@ async function logFGOTD(){
                                                     raw: true });
     let d = Date.now();
     // Offset by 1 day b/c reset is at 2am
+    if (rowList.length ===0){
+        try{
+            const tag = await global.FGOTD_Stats.create({
+                discordid: "00000",
+                funny_number: row.funny_number,
+                date: d
+            });
+        }
+        catch(err){
+            console.log(err);
+        }
+        
+    }
     d -= 1000*60*60*24;
 	for(row of rowList){
 		const tag = await global.FGOTD_Stats.create({
@@ -164,7 +176,6 @@ async function logFGOTD(){
 async function printFGOTDStats(data,interaction){
     let rowString = "";
     await interaction.guild.members.fetch();
-    rowString += "FGOTD(s):\n"
     
     data.forEach(element => {
         try{
@@ -179,7 +190,40 @@ async function printFGOTDStats(data,interaction){
         interaction.editReply("No results found")
     }
     else{
+        interaction.editReply("FGOTD:\n" + rowString)
+    }
+}
+async function printWeeklyFGOTD(data,interaction){
+    let rowString = "";
+    await interaction.guild.members.fetch();
+    
+    let weekdays =["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    console.log(data.length);
+    data.forEach(element =>{
+        try{
+            let day = weekdays[(new Date(element.date)).getDay()]
+            if (element.discordid === "00000"){
+                rowString += day + ": No one :( | 0 <:KEKW:624392576358678529>\n";    
+            }
+            else{
+                rowString += day +": " + interaction.guild.members.cache.get(element.discordid).displayName + " | " + element.funny_number + " <:KEKW:624392576358678529>\n";
+            }
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+    })
+    if (data.length < 7){
+        for(let i = data.length;i < 7;++i){
+            rowString += weekdays[i] + ": \n";
+        }
+    }
+    if(rowString === ""){
+        interaction.editReply("No results found")
+    }
+    else{
         interaction.editReply(rowString)
     }
 }
-module.exports = {createTemp, deleteTemp, printOutput,printReactOutput,printMostOutput,printFGOTD,logFGOTD,printFGOTDStats};
+module.exports = {createTemp, deleteTemp, printOutput,printReactOutput,printMostOutput,printFGOTD,logFGOTD,printFGOTDStats,printWeeklyFGOTD};
