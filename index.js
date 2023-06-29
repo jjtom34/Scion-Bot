@@ -122,6 +122,16 @@ const FGOTD_Stats = sequelize.define('FGOTD_Stats',{
 		allowNull: false,
 	}
 });
+const dng_hof = sequelize.define('dng_hof',{
+	funny_number: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0,
+		allowNull: false,
+	},
+	message_list:{
+		type: Sequelize.STRING,
+	}
+});
 // Reset the FGOTD table every day at 2am ct
 const job = schedule.scheduleJob('0 0 2 * * *',helpers.logFGOTD)
 global.table = attendance;
@@ -129,5 +139,6 @@ global.temp = startTable;
 global.react_stats = react_stats;
 global.fgotd = FGOTD;
 global.FGOTD_Stats = FGOTD_Stats;
+global.dng_hof = dng_hof;
 client.login(token);
 
