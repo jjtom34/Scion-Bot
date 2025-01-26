@@ -37,9 +37,6 @@ module.exports = {
                             const min = await global.dng_hof.min("funny_number");
                             const top_count = await global.dng_hof.count();
                             if (cached_reaction.count >= min || top_count < 10){
-                                console.log("Min " + min)
-                                console.log("Current " + cached_reaction.count)
-                                console.log(message[1].content)
                                 const [entry,created] = await global.dng_hof.findOrCreate({
                                     where:{funny_number: cached_reaction.count
                                     },
@@ -50,15 +47,15 @@ module.exports = {
                                 })
                                 // If not a new row, add to existing
                                 if(!created){
-                                    await entry.update({message_list:entry.message_list + "," +message[1].url}).then(console.log("Update Row"))
+                                    await entry.update({message_list:entry.message_list + "," +message[1].url})
                                 }
                                 else{
-                                    console.log("New row");
+
                                 }
                                 
                                 // Remove a row if over 10
                                 if (top_count > 10){
-                                    await global.dng_hof.destroy({where:{funny_number:min}}).then(console.log("Removed Lowest"));
+                                    await global.dng_hof.destroy({where:{funny_number:min}})
                                 }
                             }
                             
@@ -75,12 +72,6 @@ module.exports = {
                                     }
                                 });
                                 if(!created){
-                                    // if(!cached_reaction.emoji.id){
-                                    //     console.log(cached_reaction.message.author + " got react " + cached_reaction.emoji.toString());    
-                                    // }
-                                    // else{
-                                    //     console.log(cached_reaction.message.author + " got react " + cached_reaction.emoji.name);
-                                    // }
                                     await entry.increment('react_number');
                                 }
                             }

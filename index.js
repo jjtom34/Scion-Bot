@@ -15,6 +15,12 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+const commandDictFiles = fs.readdirSync('./commands/dng_dict').filter(file => file.endsWith('.js') && file!=="helpers.js");
+for (const file of commandDictFiles) {
+	const command = require(`./commands/dng_dict/${file}`);
+	client.commands.set(command.data.name, comamnd);
+}
+
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
@@ -48,6 +54,13 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	logging: false,
 	// SQLite only
 	storage: 'database.sqlite',
+});
+const dng_dict = new Sequelize('database', 'user', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	// SQLite only
+	storage: 'dng_dict.sqlite',
 });
 
 /*
@@ -132,6 +145,22 @@ const dng_hof = sequelize.define('dng_hof',{
 		type: Sequelize.STRING,
 	}
 });
+const dng_bible = dng_dict.define('dng_bible',{
+	phrase:{
+		type: Sequelize.STRING,
+		allowNull: false,
+	},
+	definition:{
+		type: Sequelize.STRING,
+		allowNull: false,
+	},
+	creator:{
+		type: Sequelize.STRING,
+	},
+	reference:{
+		type: Sequelize.STRING
+	}
+})
 // Reset the FGOTD table every day at 2am ct
 const job = schedule.scheduleJob('0 0 2 * * *',helpers.logFGOTD)
 global.table = attendance;
@@ -140,5 +169,6 @@ global.react_stats = react_stats;
 global.fgotd = FGOTD;
 global.FGOTD_Stats = FGOTD_Stats;
 global.dng_hof = dng_hof;
+global.dng_bible = dng_bible;
 client.login(token);
 

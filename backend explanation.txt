@@ -1,0 +1,7 @@
+Deprecated:
+FGOTD/FGOTD_Stats- who was the funny guy of the day on a certain date, deprecated b/c the bit is over
+Attendance- Everyone who has joined a vc at some point and how long they were joined for, deprecated b/c I'm too lazy to debug the ras pi
+
+Still in use:
+DNG_HOF- The most reacted messages in the server
+react_stats - Every react a person has done
