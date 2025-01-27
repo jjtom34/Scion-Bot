@@ -1,10 +1,10 @@
 const fs = require('fs');
 const Sequelize = require('sequelize');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 const schedule = require('node-schedule');
 const helpers = require('./helpers.js');
-const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'],intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_VOICE_STATES,Intents.FLAGS.GUILD_MEMBERS,Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'],intents: [GatewayIntentBits.MessageContent,GatewayIntentBits.Guilds,GatewayIntentBits.GuildMembers,GatewayIntentBits.GuildVoiceStates,GatewayIntentBits.GuildMessageReactions] });
 
 // Handle text commands
 client.commands = new Collection();
@@ -130,6 +130,55 @@ const dng_hof = sequelize.define('dng_hof',{
 	},
 	message_list:{
 		type: Sequelize.STRING,
+	}
+});
+const messages = sequelize.define('messages',{
+	message_id:{
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		primaryKey: true
+	},
+	author:{
+		type: Sequelize.STRING
+	},
+	message_content:{
+		type: Sequelize.STRING
+	},
+	num_Reactions:{
+		type: Sequelize.INTEGER
+	},
+	message_link:{
+		type:Sequelize.STRING
+	},
+	attachment_num:{
+		type:Sequelize.INTEGER
+	},
+	date:{
+		type:Sequelize.INTEGER
+	}
+});
+const reactions = sequelize.define('reactions',{
+	reaction_type:{
+		type:Sequelize.STRING
+	},
+	original_user:{
+		type:Sequelize.INTEGER
+	},
+	date:{
+		type:Sequelize.INTEGER
+	}
+
+})
+const mentions = sequelize.define('mentions',{
+	mentioner:{
+		type: Sequelize.STRING,
+		allowNull: false,
+	},
+	mentionee:{
+		type:Sequelize.STRING
+	},
+	date:{
+		type:Sequelize.INTEGER
 	}
 });
 // Reset the FGOTD table every day at 2am ct
